@@ -240,3 +240,7 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/ConsoleApplication1/put_object.cpp
+/ConsoleApplication1/ConsoleApplication1.vcxproj
+/ConsoleApplication1/ConsoleApplication1.vcxproj.filters
+/delete_file
