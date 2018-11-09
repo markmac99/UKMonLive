@@ -148,10 +148,12 @@
   <ItemGroup>
     <ClCompile Include="..\PreprocessXML\PreprocessXML.cpp" />
     <ClCompile Include="Auth.cpp" />
+    <ClCompile Include="EventLog.cpp" />
     <ClCompile Include="put_file.cpp" />
     <ClCompile Include="UKMonLiveCL.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EventLog.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="UKMonLiveCL.h" />
   </ItemGroup>

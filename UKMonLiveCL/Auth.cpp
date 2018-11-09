@@ -36,7 +36,8 @@ int LoadIniFiles(void)
 	FILE *f = fopen(authfile, "r");
 	if (!f)
 	{
-		std::cerr << "Unable to open key file" << std::endl;
+		std::cerr << "Unable to open security key file" << std::endl;
+		theEventLog.Fire(EVENTLOG_INFORMATION_TYPE, 1, 99, L"Unable to open AUTH_UKMONLiveWatcher.ini; cannot continue", L"");
 		return -1;
 	}
 
@@ -49,7 +50,7 @@ int LoadIniFiles(void)
 	fgets(theKeys.TableEndPoint, 512, f);
 	if (fgets(theKeys.BucketName, 512, f) == NULL)
 	{
-		std::cerr << "Key file malformed" << std::endl;
+		theEventLog.Fire(EVENTLOG_INFORMATION_TYPE, 1, 99, L"Security key file malformed; cannot continue", L"");
 		return -1;
 	}
 
@@ -71,7 +72,7 @@ int LoadIniFiles(void)
 	f = fopen(inifile, "r");
 	if (!f)
 	{
-		std::cerr << "unable to open ini file" << std::endl;
+		theEventLog.Fire(EVENTLOG_INFORMATION_TYPE, 1, 99, L"Unable to open UKMONLiveWatcher.ini; cannot continue", L"");
 		return -1;
 	}
 	fgets(s, 512, f); // ignore this line
@@ -103,13 +104,6 @@ int LoadIniFiles(void)
 
 	fclose(f);
 
-	sprintf(ErrFile, "%s\\%s", szLocalPath, "UKMON_Live.log");
-	errf.open(ErrFile, std::ios::out | std::ios::app);
-	if (!errf.is_open())
-	{
-		std::cerr << "unable  to open log file" << std::endl;
-		return -1;
-	}
 	return 0;
 }
 

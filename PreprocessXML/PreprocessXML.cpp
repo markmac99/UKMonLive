@@ -27,23 +27,22 @@ int ReadBasicXML(std::string pth, const char* cFileName, long &frcount, long &ma
 	int retry = 0;
 	while (!thef.is_open() && retry++ < 100)
 	{
-		//errf << "Unable to open file " << cFileName << std::endl;
 		Sleep(100);
 		thef.open(fname);
 	}
 	if (!thef.is_open())
 	{
 		std::cout << "Unable to open xml file " << cFileName << std::endl;
-		errf << "Unable to open xml file " << cFileName << std::endl;
+		theEventLog.Fire(EVENTLOG_INFORMATION_TYPE, 1, 1, L"Unable to open XML file for analysis;", L"");
 	}
 	else
 	{
 		std::string aline;
-		std::getline(thef, aline); 
+		std::getline(thef, aline);
 		std::getline(thef, aline);
 		size_t m1 = aline.find("frames");
-		if (m1 == aline.npos || aline.length()==0)
-			std::cerr << "frames entry not found in " << cFileName << std::endl;
+		if (m1 == aline.npos || aline.length() == 0)
+			theEventLog.Fire(EVENTLOG_INFORMATION_TYPE, 1, 1, L"Frames value not found in the XML;", L"");
 		else
 		{
 			size_t m2 = aline.find("\"", m1 + 8);
@@ -53,7 +52,7 @@ int ReadBasicXML(std::string pth, const char* cFileName, long &frcount, long &ma
 		std::getline(thef, aline);
 		m1 = aline.find("hit") + 5;
 		if (m1 == aline.npos || aline.length() == 0)
-			errf << "hit entry not found in " << cFileName << std::endl;
+			theEventLog.Fire(EVENTLOG_INFORMATION_TYPE, 1, 1, L"Hit value not found in the XML;", L"");
 		else
 		{
 			size_t m2 = aline.find("\"", m1);
@@ -65,7 +64,7 @@ int ReadBasicXML(std::string pth, const char* cFileName, long &frcount, long &ma
 				std::getline(thef, aline);
 				m1 = aline.find("bmax") + 6;
 				if (m1 == aline.npos || aline.length() == 0)
-					errf << "bmax entry not found in " << cFileName << std::endl;
+					theEventLog.Fire(EVENTLOG_INFORMATION_TYPE, 1, 1, L"bmax value not found in the XML;", L"");
 				else
 				{
 					size_t m2 = aline.find("\"", m1);

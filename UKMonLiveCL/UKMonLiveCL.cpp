@@ -37,6 +37,11 @@ int dryrun = 0;
 
 int main(int argc, char** argv)
 {
+	wchar_t msg[128] = {0};
+	wchar_t msg2[128] = {0};
+	wchar_t msg3[128] = {0};
+	wchar_t msg4[128] = {0};
+
 	if (argc > 1 && argv[1][0] == 'D')
 		Debug = 1;
 	if (argc > 1 && argv[1][0] == 'T')
@@ -45,51 +50,55 @@ int main(int argc, char** argv)
 		dryrun = 1;
 	}
 
+	theEventLog.Initialize(L"UKMONLiveCL");
 	if (LoadIniFiles() < 0)
 		return -1;
+	theEventLog.Fire(EVENTLOG_INFORMATION_TYPE, 1, 0, L"Started", L"");
 
 	std::time_t t = std::time(0);   // get time now
 	std::tm* now = std::localtime(&t);
 
 	std::cout << (now->tm_year + 1900) << '-' << (now->tm_mon + 1) << '-' << now->tm_mday << ' ' << now->tm_hour << ":" << now->tm_min << ":" << now->tm_sec;
 	std::cout << " UKMON Live Filewatcher C++ version. Monitoring: " << ProcessingPath << std::endl;
-	std::cout << "logging being sent to " << ErrFile << std::endl;
+	std::cout << "Logging to the windows eventlog" << std::endl;
+	wchar_t msg0[512];
+	char msg0_s[512];
+	sprintf(msg0_s, "Monitoring %s", ProcessingPath);
+	mbstowcs(msg0, msg0_s, 512);
+
 	if (framelimit > -1)
 	{
-		std::cout << "Checking for trails longer than " << framelimit << "; ";
-		errf << "Checking for trails longer than " << framelimit << "; ";
+		std::cout << "Checking for trails longer than  " << framelimit << ";";
+		wsprintf(msg, L"Checking for trails longer than  %ld;", framelimit);
 	}
 	else
 	{
 		std::cout << "No framecount active; ";
-		errf << "No framecount active; ";
+		wsprintf(msg, L"Not checking frame count;");
 	}
 	if (minbright > -1)
 	{
 		std::cout << "Checking for objects brighter than " << minbright;
-		errf << "Checking for objects brighter than " << minbright;
+		wsprintf(msg2, L"Checking for objects brighter than %ld;", minbright);
 	}
 	else
 	{
 		std::cout << "No brightness check active ";
-		errf << "No brightness check active ";
+		wsprintf(msg2, L"No brightness check active;");
 	}
 	std::cout << std::endl;
-	errf << std::endl;
 
-	errf << (now->tm_year + 1900) << '-' << (now->tm_mon + 1) << '-' << now->tm_mday << ' ' << now->tm_hour << ":" << now->tm_min << ":" << now->tm_sec;
-	errf << " UKMON Live Filewatcher C++ version. Monitoring: " << ProcessingPath << std::endl;
-	
 	if (Debug)
 	{
 		std::cout << "Debugging is on" << std::endl;
-		errf << "Debugging is on" << std::endl;
+		wsprintf(msg3, L"Debugging is on;");
 	}
 	if (dryrun)
 	{
 		std::cout << "Dry run enabled - nothing will be uploaded" << std::endl;
-		errf << "Dry run enabled - nothing will be uploaded" << std::endl;
+		wsprintf(msg4, L"Dry run is on- nothing will be uploaded;");
 	}
+	theEventLog.Fire(EVENTLOG_INFORMATION_TYPE, 1, 1, msg0, msg, msg2, msg3, msg4, L"");
 
 	std::cout << "==============================================" << std::endl;
 
@@ -108,8 +117,7 @@ int main(int argc, char** argv)
 		NULL);
 	if (hDir == NULL)
 	{
-		errf << "Invalid data file path" << std::endl;
-		errf.close();
+		theEventLog.Fire(EVENTLOG_INFORMATION_TYPE, 1, 99, L"Invalid data file path; cannot continue;", L"");
 		return -1;
 	}
 
@@ -125,8 +133,7 @@ int main(int argc, char** argv)
 		FILE_NOTIFY_INFORMATION *pbuf;
 		if (!lpBuf)
 		{
-			errf << "Unable to allocate buffer for directory reads" << std::endl;
-			errf.close();
+			theEventLog.Fire(EVENTLOG_INFORMATION_TYPE, 1, 99, L"Unable to allocate memory for directory reads; cannot continue;", L"");
 			exit (-1);
 		}
 		if (Debug) std::cout << "1. waiting for changes" << std::endl;
@@ -141,7 +148,7 @@ int main(int argc, char** argv)
 				FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, e, 0, msg, 512,NULL);
 				wcstombs(msg_s, msg, 512);
 				std::cout << "Error " << e << " scanning directory" << ProcessingPath << " - buffer trashed" << msg << std::endl;
-				errf << "Error " << e << " scanning directory" << ProcessingPath << " - buffer trashed" << msg << std::endl;
+				theEventLog.Fire(EVENTLOG_INFORMATION_TYPE, 1, 98, L"Error Scanning directory" , L"buffer trashed;", L"");
 			}	
 			else if (retsiz > 0)
 			{
@@ -153,7 +160,6 @@ int main(int argc, char** argv)
 					wcsncpy(fname, pbuf->FileName, pbuf->FileNameLength/2);
 					offset = pbuf->NextEntryOffset;
 
-//					if (Debug) fprintf(stdout, "3. %S %S %X\n", lastname, fname, pbuf->Action);
 					// check file is different and action is modified 
 					if (wcsncmp(lastname, fname, pbuf->FileNameLength) != 0 && (pbuf->Action == FILE_ACTION_ADDED))
 					{
@@ -207,15 +213,8 @@ int main(int argc, char** argv)
 									std::cout << " brightness " << maxbmax << "<" << minbright;
 								std::cout << std::endl;
 
-								errf << nCounter << ": Skipping " << filename_s << ":";
-								if (frcount < minframes)
-									errf << " framecount " << frcount << "<" << minframes;
-								if (frcount > framelimit)
-									errf<< " framecount " << frcount << ">" << framelimit;
-								if (maxbmax < minbright)
-									errf << " brightness " << maxbmax << "<" << minbright;
-								errf << std::endl;
-
+								wsprintf(msg, L"%d: skipping %ls - framecount %d brightness %d", nCounter, fname, frcount, maxbmax);
+								theEventLog.Fire(EVENTLOG_INFORMATION_TYPE, 1, 3, msg, L"");
 							}
 						}
 					}
@@ -229,24 +228,16 @@ int main(int argc, char** argv)
 		}
 		else
 		{
-			wchar_t msg[512] = { 0 };
+			wchar_t mmsg[512] = { 0 };
 			char msg_s[512] = { 0 };
 			DWORD e = GetLastError();
-			FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, e, 0, msg, 512, NULL);
-			wcstombs(msg_s, msg, 512);
-			std::cout << "Error " << e << " scanning directory" << ProcessingPath << " " << msg << std::endl;
-			errf << "Error " << e << " scanning directory" << ProcessingPath << " " << msg << std::endl;
-			errf.close();
+			FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, e, 0, mmsg, 512, NULL);
+			wcstombs(msg_s, mmsg, 512);
+			std::cout << "Error " << e << " scanning directory" << ProcessingPath << " " << mmsg << std::endl;
+			theEventLog.Fire(EVENTLOG_INFORMATION_TYPE, 1, 99, L"Error Scanning Directory; cannot continue", mmsg, L"");
 			exit(-1);
 		}
 		free(lpBuf);
 	}
-	errf.close();
-	return 0;
-}
-
-
-int SendToS3(wchar_t * fname)
-{
 	return 0;
 }

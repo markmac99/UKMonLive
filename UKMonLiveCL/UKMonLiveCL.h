@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "EventLog.h"
 #include <Windows.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,8 +44,6 @@ extern struct KeyData theKeys;
 extern char ProcessingPath[512];
 extern int nCounter;
 extern int maxretry;
-extern std::ofstream errf;
-extern char ErrFile[512];
 extern int Debug;
 extern int dryrun;
 extern int delay_ms;

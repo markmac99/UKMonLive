@@ -38,6 +38,7 @@ specific language governing permissions and limitations under the License.
 */
 int put_file(char* buckname, const char* fname, char* reg, char* acct, char* secret, long frcount, long maxbmax)
 {
+	wchar_t msg[128];
 	Aws::SDKOptions options;
 	Aws::InitAPI(options);
 	{
@@ -62,7 +63,6 @@ int put_file(char* buckname, const char* fname, char* reg, char* acct, char* sec
 
 		nCounter++;
 		std::cout << nCounter << ": Uploading " << file_name << "...";
-		errf << nCounter << ": Uploading " << file_name << "...";
 
 		Aws::Auth::AWSCredentials creds;
 		creds.SetAWSAccessKeyId(acct);
@@ -94,21 +94,30 @@ int put_file(char* buckname, const char* fname, char* reg, char* acct, char* sec
 			if (put_object_outcome.IsSuccess())
 			{
 				std::cerr << "Done! Frames " << frcount << " brightness " << maxbmax << std::endl;
-				errf << "Done! Frames " << frcount << " brightness " << maxbmax << std::endl;
+				wchar_t wfname[512];
+				mbstowcs(wfname, fname, strlen(fname));
+				wsprintf(msg, L"%d: Uploading %ls....done! Frames %d brightness %d", nCounter, wfname, frcount, maxbmax);
+				theEventLog.Fire(EVENTLOG_INFORMATION_TYPE, 1, 2, msg, L"");
 			}
 			else
 			{
 				std::cerr << "Upload of " << file_name << " failed after " << maxretry << " attempts - check log!" << std::endl;
 
-				errf << "Upload of " << file_name << " failed after " << maxretry << " attempts" << std::endl;
-				errf << "PutObject error: " <<
-					put_object_outcome.GetError().GetExceptionName() << " " <<
-					put_object_outcome.GetError().GetMessage() << std::endl;
+				wchar_t wfname[512];
+				mbstowcs(wfname, fname, strlen(fname));
+				wsprintf(msg, L"%d: Uploading %ls....Failed after %d attempts!", nCounter, wfname, maxretry);
+				wchar_t msg2[512];
+				wsprintf(msg2, L"%s: %s", put_object_outcome.GetError().GetExceptionName(), put_object_outcome.GetError().GetMessage());
+				theEventLog.Fire(EVENTLOG_INFORMATION_TYPE, 1, 2, msg, msg2, L"");
 			}
 		}
 		else
 		{
 			std::cout << std::endl << "dry run, would have sent " << file_name << std::endl;
+			wchar_t wfname[512];
+			mbstowcs(wfname, fname, strlen(fname));
+			wsprintf(msg, L"Dry Run: Uploading %ls....done!", wfname);
+			theEventLog.Fire(EVENTLOG_INFORMATION_TYPE, 1, 2, msg, L"");
 		}
 	}
 	Aws::ShutdownAPI(options);
