@@ -244,3 +244,5 @@ ModelManifest.xml
 /ConsoleApplication1/ConsoleApplication1.vcxproj
 /ConsoleApplication1/ConsoleApplication1.vcxproj.filters
 /delete_file
+*.tlog
+*/keys.txt

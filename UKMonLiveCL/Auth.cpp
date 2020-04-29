@@ -43,12 +43,12 @@ int LoadIniFiles(void)
 
 	char s[512];
 	fgets(s, 512, f); // ignore this line
-	fgets(theKeys.AccountKey, 512, f); // account key encrypted and recoded in Hex 
-	fgets(theKeys.AccountName, 512, f); // account name encrypted and recoded in Hex
-	fgets(theKeys.QueueEndPoint, 512, f);
-	fgets(theKeys.StorageEndPoint, 512, f);
-	fgets(theKeys.TableEndPoint, 512, f);
-	if (fgets(theKeys.BucketName, 512, f) == NULL)
+	fgets(theKeys.AccountKey, 128, f); // account key encrypted and recoded in Hex 
+	fgets(theKeys.AccountName, 128, f); // account name encrypted and recoded in Hex
+	fgets(theKeys.QueueEndPoint, 128, f);
+	fgets(theKeys.StorageEndPoint, 128, f);
+	fgets(theKeys.TableEndPoint, 128, f);
+	if (fgets(theKeys.BucketName, 128, f) == NULL)
 	{
 		theEventLog.Fire(EVENTLOG_INFORMATION_TYPE, 1, 99, L"Security key file malformed; cannot continue", L"");
 		return -1;

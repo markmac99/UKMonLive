@@ -7,7 +7,7 @@
     </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
@@ -15,34 +15,31 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="UKMonLiveCL.cpp">
+    <ClCompile Include="UKMonMonthlyArchiver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Auth.cpp">
+    <ClCompile Include="..\UKMonLiveCL\EventLog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="put_file.cpp">
+    <ClCompile Include="put_file_mthly.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\PreprocessXML\PreprocessXML.cpp">
+    <ClCompile Include="Auth_mthly.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="UKMonLiveCL.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EventLog.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\UKMonLiveCL\resource.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Resource.rc">
-      <Filter>Resource Files</Filter>
+    <ResourceCompile Include="..\UKMonLiveCL\Resource.rc">
+      <Filter>Source Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\..\AppData\Local\UKMON\UKMonArchiver.ini" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\ukmon_ZPQ_icon.ico">

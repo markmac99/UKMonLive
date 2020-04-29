@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UKMonLiveCL", "UKMonLiveCL\UKMonLiveCL.vcxproj", "{9DD3A997-5D42-428A-ADED-435887181EAA}"
 EndProject
@@ -10,6 +10,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PreprocessXML", "PreprocessXML\PreprocessXML.vcxproj", "{9B8B2969-42B0-4CE8-8D34-6F1C9E7B8558}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "delete_file", "delete_file\delete_file.vcxproj", "{C1E19E65-3E77-4379-A7A1-A2566B5180F1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UKMonMonthlyArchiver", "UKMonMonthlyArchiver\UKMonMonthlyArchiver.vcxproj", "{0FF1CEA1-4FE9-4E20-90E2-CF0FC433E315}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Encryptor", "Encryptor\Encryptor.vcxproj", "{B124949C-6467-4983-AAB6-197B2F7D7919}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,8 +55,27 @@ Global
 		{C1E19E65-3E77-4379-A7A1-A2566B5180F1}.Release|x64.Build.0 = Release|x64
 		{C1E19E65-3E77-4379-A7A1-A2566B5180F1}.Release|x86.ActiveCfg = Release|Win32
 		{C1E19E65-3E77-4379-A7A1-A2566B5180F1}.Release|x86.Build.0 = Release|Win32
+		{0FF1CEA1-4FE9-4E20-90E2-CF0FC433E315}.Debug|x64.ActiveCfg = Debug|x64
+		{0FF1CEA1-4FE9-4E20-90E2-CF0FC433E315}.Debug|x64.Build.0 = Debug|x64
+		{0FF1CEA1-4FE9-4E20-90E2-CF0FC433E315}.Debug|x86.ActiveCfg = Debug|Win32
+		{0FF1CEA1-4FE9-4E20-90E2-CF0FC433E315}.Debug|x86.Build.0 = Debug|Win32
+		{0FF1CEA1-4FE9-4E20-90E2-CF0FC433E315}.Release|x64.ActiveCfg = Release|x64
+		{0FF1CEA1-4FE9-4E20-90E2-CF0FC433E315}.Release|x64.Build.0 = Release|x64
+		{0FF1CEA1-4FE9-4E20-90E2-CF0FC433E315}.Release|x86.ActiveCfg = Release|Win32
+		{0FF1CEA1-4FE9-4E20-90E2-CF0FC433E315}.Release|x86.Build.0 = Release|Win32
+		{B124949C-6467-4983-AAB6-197B2F7D7919}.Debug|x64.ActiveCfg = Debug|x64
+		{B124949C-6467-4983-AAB6-197B2F7D7919}.Debug|x64.Build.0 = Debug|x64
+		{B124949C-6467-4983-AAB6-197B2F7D7919}.Debug|x86.ActiveCfg = Debug|Win32
+		{B124949C-6467-4983-AAB6-197B2F7D7919}.Debug|x86.Build.0 = Debug|Win32
+		{B124949C-6467-4983-AAB6-197B2F7D7919}.Release|x64.ActiveCfg = Release|x64
+		{B124949C-6467-4983-AAB6-197B2F7D7919}.Release|x64.Build.0 = Release|x64
+		{B124949C-6467-4983-AAB6-197B2F7D7919}.Release|x86.ActiveCfg = Release|Win32
+		{B124949C-6467-4983-AAB6-197B2F7D7919}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B1B1EF0-5575-4B1D-8CBA-1DB1DD111DBB}
 	EndGlobalSection
 EndGlobal
